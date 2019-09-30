@@ -20,7 +20,7 @@ The price data follows the format of Open, High, Low and Close (OHLC) for a give
 To estimate/approximate our profit function, three different frameworks will be built using statistical machine learning models - Convolutional Neural Network (CNN), Recurrent Neural Network (RNN), and Long Short-Term Memory (LSTM). We will be using goal oriented algorithms like deep Q-learning and Recurrent Reinforcement Learning when training the above mentioned neural network models and make them learn how to maximize the return profit over time.
 
 
-# Research Plan
+# Proposed plan of research
 
 To scrape the financial price data, assets or holdings are selected in a way that they range across different stock sectors so as to minimize the downside risk. Some of the selected holdings are Apple Inc. from information technology sector, Boeing from industrial sector, State Street Corp. from financial sector and Facebook from communication sector. This diversification of portfolio is the most important factor in reducing the overall risk involved because when portfolio is diversified, if one asset value goes down, other might go up which rebalances it. In order to manage the sparsity in allocation of each asset in the portfolio, a small subset of financial price data is selected here.
 
