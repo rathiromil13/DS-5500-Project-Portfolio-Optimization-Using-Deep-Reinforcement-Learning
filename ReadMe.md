@@ -15,7 +15,7 @@ The dataset consists of:
 	~10 Cryptocurrency Data from Poloniex Exchange<sup>7</sup>
 
 
-The price data follows the format of Open, High, Low and Close (OHLC) for a given time frame. Open is the price at which the stock begins trading, High is the highest value it attains, Low is the lowest value throughout the day and Close is the closing value. For discrete data, this time frame is one day whereas for continuous data, it’ll be about 30min. Usually, open price is equal to close price for the previous day, but cryptocurrency follows high frequency trading, thus we might not see open price for one day same as closing price for previous days. 
+The price data follows the format of Open, High, Low and Close (OHLC) for a given time frame. Open is the price at which the stock begins trading, High is the highest value it attains, Low is the lowest value throughout the day and Close is the closing value. For discrete data, this time frame is one day whereas for continuous data, it’ll be about 30 minutes. Usually, open price is equal to close price for the previous day, but cryptocurrency follows high frequency trading, thus we might not see open price for one day same as closing price for previous days. 
 
 To estimate/approximate our profit function, three different frameworks will be built using statistical machine learning models - Convolutional Neural Network (CNN), Recurrent Neural Network (RNN), and Long Short-Term Memory (LSTM). We will be using goal oriented algorithms like deep Q-learning and Recurrent Reinforcement Learning when training the above mentioned neural network models and make them learn how to maximize the return profit over time.
 
