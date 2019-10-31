@@ -39,22 +39,22 @@ Data science tools<sup>8</sup> used are pandas, tensorflow, beautifulsoup, sciki
 
 In order to explore the relationship between the holdings in different stock sectors, heat map has been plotted to identify the correlation between stocks for both discrete stocks and crypto currency trading data.
 
-![Heat map for discrete stocks trading data[]{label="fig:heatmap"}](heat_map_stocks.png)
+![Heat map for discrete stocks trading data[]{label="fig:heatmap"}](figures/heat_map_stocks.png)
 ###### Figure 1: Heat map for discrete stocks trading data
 
 As observed from Figure 1 for discrete stocks trading data, stocks for some of the companies like Apple, Amazon, Google and Boeing are highly correlated indicating the stocks always move in the same direction. This fact can be used to select assets with very less correlations for the inclusion of the portfolio to further minimize the risk factor.
 
-<img src="figures/stocks_returns_2016.jpeg" width="400" height ="400"> <img src="stocks_returns_2017.jpeg" width="400" height ="400"> <img src="stocks_returns_2018.jpeg" width="400" height ="400"><img src="stocks_returns_2019.jpeg" width="400" height ="400">
+<img src="figures/stocks_returns_2016.jpeg" width="400" height ="400"> <img src="figures/stocks_returns_2017.jpeg" width="400" height ="400"> <img src="figures/stocks_returns_2018.jpeg" width="400" height ="400"><img src="figures/stocks_returns_2019.jpeg" width="400" height ="400">
 ###### Figure 2: Returns for discrete stocks
 
 For example, the interactive plots<sup>9</sup> represented in Figure 2 show the variation of stock returns for three holdings Apple, State Street Corp. and Exxon (for years 2016, 2017, 2018 and 2019) which show a very low correlation amongst themselves. As can be seen, majority of the times the returns move in opposite directions and hence a security factor comes into play if the portfolio is distributed amongst these low correlated assets, as the decrease in returns from one asset can be balanced by the increase in the other.
 
-![Heat map for discrete crypto currency trading data[]{label="fig:heatmap"}](heat_map_crypto.png)
+![Heat map for discrete crypto currency trading data[]{label="fig:heatmap"}](figures/heat_map_crypto.png)
 ###### Figure 3: Heat map for discrete crypto currency trading data
 
 As observed in figure 3 for discrete crypto currency trading data, crypto currencies have higher correlation than discrete stocks which is mainly due to the fact that they’ve been selected on the basis of the volume of trading on the index, that is, the crypto currencies which are performing really good in the market. The basic reason for doing so is that since crypto currency has been introduced in recent years, there is not enough data for the majority of them. In such a scenario, only the top trading one’s provide us with sufficient data to build a well trained framework. The same can be concluded from the interactive plots<sup>10</sup> shown in the figure 4 demonstrating the variation of returns for three crypto currencies - Bitcoin, Ethereum and Litecoin (for years 2016, 2017, 2018 and 2019). As can be seen, majority of the times the returns move in the same direction.
 
-<img src="crypto_returns_2016.jpeg" width="400" height ="400"> <img src="crypto_returns_2017.jpeg" width="400" height ="400"> <img src="crypto_returns_2018.jpeg" width="400" height ="400"><img src="crypto_returns_2019.jpeg" width="400" height ="400">
+<img src="figures/crypto_returns_2016.jpeg" width="400" height ="400"> <img src="figures/crypto_returns_2017.jpeg" width="400" height ="400"> <img src="figures/crypto_returns_2018.jpeg" width="400" height ="400"><img src="figures/crypto_returns_2019.jpeg" width="400" height ="400">
 ###### Figure 4: Returns for discrete crypto stocks
 
 For discrete stocks data, the total data collected is for 3671 days (excluding weekends and national holidays). But in case of crypto currency data, the total data collected varies from 1600 days to 2300 days approximately. Again, largely due to the fact that the crypto currencies were launched much later in the market. Therefore, one of the major problems to be handled while building an efficient framework here is the high sparsity and high correlation in case of crypto currency data.
