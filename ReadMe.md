@@ -44,7 +44,7 @@ In order to explore the relationship between the holdings in different stock sec
 
 As observed from Figure 1 for discrete stocks trading data, stocks for some of the companies like Apple, Amazon, Google and Boeing are highly correlated indicating the stocks always move in the same direction. This fact can be used to select assets with very less correlations for the inclusion of the portfolio to further minimize the risk factor.
 
-<img src="stocks_returns_2016.jpeg" width="400" height ="400"> <img src="stocks_returns_2017.jpeg" width="400" height ="400"> <img src="stocks_returns_2018.jpeg" width="400" height ="400"><img src="stocks_returns_2019.jpeg" width="400" height ="400">
+<img src="figures/stocks_returns_2016.jpeg" width="400" height ="400"> <img src="stocks_returns_2017.jpeg" width="400" height ="400"> <img src="stocks_returns_2018.jpeg" width="400" height ="400"><img src="stocks_returns_2019.jpeg" width="400" height ="400">
 ###### Figure 2: Returns for discrete stocks
 
 For example, the interactive plots<sup>9</sup> represented in Figure 2 show the variation of stock returns for three holdings Apple, State Street Corp. and Exxon (for years 2016, 2017, 2018 and 2019) which show a very low correlation amongst themselves. As can be seen, majority of the times the returns move in opposite directions and hence a security factor comes into play if the portfolio is distributed amongst these low correlated assets, as the decrease in returns from one asset can be balanced by the increase in the other.
