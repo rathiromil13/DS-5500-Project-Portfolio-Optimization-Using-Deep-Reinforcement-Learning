@@ -41,7 +41,7 @@ In order to build a portfolio optimizer, 15 assets for stock data based on corre
 
 On testing the performance of optimizing agent over stocks data, the final weights allocated to different assets can be seen in figure 1. The highest weight was assigned to Coca-Cola Co. followed by Verizon Communications Inc and Walmart Inc. The least weight was assigned Simon Property Group Inc followed by Xcel Energy Inc.
 
-![wt_vectors_stocks[]{label="fig:wt_vectors_stocks"}](figures/test_result_plots/wt_vectors_stocks.png)
+![wt_vectors_stocks[]{label="fig:wt_vectors_stocks"}](figures/test_result_plots/wt_vector_stocks.png)
 ###### Figure 1: Weights obtained for stocks portfolio
 
 As seen in Figure 2 that represents the cumulative portfolio value across test steps, the value returned by the built optimising agent increased with each test step and performed better when compared to the values returned by the agent assigning equal weights amongst all the assets. 
@@ -55,7 +55,7 @@ The mean sharpe ratio obtained for the optimizing agent in case of stocks data i
 
 On testing the performance of optimizing agent over crypto data, the final weights allocated to different assets can be seen in figure 3. The highest weight was assigned to Litecoin followed by XRP(Ripple) and Ethereum. The least weight was assigned to Monero followed by NEM(XEM).
 
-![wt_vectors_crypto[]{label="fig:wt_vectors_crypto"}](figures/test_result_plots/wt_vectors_crypto.png)
+![wt_vectors_crypto[]{label="fig:wt_vectors_crypto"}](figures/test_result_plots/wt_vector_crypto.png)
 ###### Figure 3: Weights obtained for Crypto portfolio
 
 As seen in Figure 4 that represents the cumulative portfolio value across test steps, the value returned by the built optimising agent increased with each test step and performed better when compared to the values returned by the agent assigning equal weights amongst all the assets. 
