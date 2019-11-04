@@ -8,16 +8,16 @@ Financial portfolio optimization is the process of redistributing funds into mul
 
 The dataset consists of:
 
-(i) Historical trading data for 15 stocks from S&P 500 portfolio<sup>5</sup> from 2005 to present
+(i)  Historical trading data for 15 stocks from S&P 500 portfolio<sup>1</sup> from 2005 to present
 
-(ii) Discretized historical trading data for 6 Cryptocurrencies from CoinMarketCap<sup>6</sup> from 2015 to present
+(ii) Discretized historical trading data for 6 Cryptocurrencies from CoinMarketCap<sup>2</sup> from 2015 to present
 
-(ii) Continuous historical trading data for ~10 Cryptocurrencies from Poloniex Exchange<sup>7</sup>
+(ii) Continuous historical trading data for ~10 Cryptocurrencies from Poloniex Exchange<sup>3</sup>
 
 
 The price data follows the format of Open, High, Low and Close (OHLC) for a given time frame. Open is the price at which the stock begins trading, High is the highest value it attains, Low is the lowest value throughout the day and Close is the closing value. For stocks data and discretized cryptocurrency data, the time frame considered is one trading day whereas for continuous cryptocurrency data, time frame will be about 30 minutes. Usually, open price is equal to close price for the previous day, but cryptocurrency follows high frequency trading, thus we might not see open price for one day same as closing price for previous days. 
 
-To build a better portfolio optimizing agent than the one obtained in phase 1, where the solution framework was built using Convolutional Neural Network (CNN), another framework will be built using Long Short-Term Memory (LSTM). We will be using goal oriented algorithms like deep Q-learning and Recurrent Reinforcement Learning when training the above mentioned neural network models and make them learn how to maximize the return profit over time.
+To build a better portfolio optimizing agent than the one obtained in phase 1, where the solution framework was built using Convolutional Neural Network (CNN), another framework will be built using Long Short-Term Memory (LSTM). *We will be using goal oriented algorithms like deep Q-learning and Recurrent Reinforcement Learning when training the above mentioned neural network models and make them learn how to maximize the return profit over time.*
 
 
 # Proposed plan of research
@@ -37,77 +37,50 @@ Data science tools<sup>8</sup> used are pandas, tensorflow, beautifulsoup, sciki
 
 # Preliminary results
 
-In order to explore the relationship between the holdings in different stock sectors, heat map has been plotted to identify the correlation between stocks for both discrete stocks and crypto currency trading data.
+In order to build a portfolio optimizer, 15 assets for stock data based on correlation and 6 assets for cryptocurrencies based on availability of data was considered. A deep Reinforcement learning method was applied and a Convolution Neural Network model was built. The results from the model have been analysed and will be considered as a baseline for the second phase of the project.
 
-![Heat map for discrete stocks trading data[]{label="fig:heatmap"}](figures/heat_map_stocks.png)
-###### Figure 1: Heat map for discrete stocks trading data
+On testing the performance of optimizing agent over stocks data, the final weights allocated to different assets can be seen in figure 1. The highest weight was assigned to Coca-Cola Co. followed by Verizon Communications Inc and Walmart Inc. The least weight was assigned Simon Property Group Inc followed by Xcel Energy Inc.
 
-As observed from Figure 1 for discrete stocks trading data, stocks for some of the companies like Apple, Amazon, Google and Boeing are highly correlated indicating the stocks always move in the same direction. This fact can be used to select assets with very less correlations for the inclusion of the portfolio to further minimize the risk factor.
+![wt_vectors_stocks[]{label="fig:wt_vectors_stocks"}](figures/test_results_plots/wt_vectors_stocks.png)
+###### Figure 1: Weights obtained for stocks portfolio
 
-<img src="figures/stocks_returns_2016.jpeg" width="400" height ="400"> <img src="figures/stocks_returns_2017.jpeg" width="400" height ="400"> <img src="figures/stocks_returns_2018.jpeg" width="400" height ="400"><img src="figures/stocks_returns_2019.jpeg" width="400" height ="400">
-###### Figure 2: Returns for discrete stocks
+As seen in Figure 2 that represents the cumulative portfolio value across test steps, the value returned by the built optimising agent increased with each test step and performed better when compared to the values returned by the agent assigning equal weights amongst all the assets. 
+The optimizing agent exhibited an increase of 25-30% in cumulative portfolio value over the initial portfolio value.
 
-For example, the interactive plots<sup>9</sup> represented in Figure 2 show the variation of stock returns for three holdings Apple, State Street Corp. and Exxon (for years 2016, 2017, 2018 and 2019) which show a very low correlation amongst themselves. As can be seen, majority of the times the returns move in opposite directions and hence a security factor comes into play if the portfolio is distributed amongst these low correlated assets, as the decrease in returns from one asset can be balanced by the increase in the other.
 
-![Heat map for discrete crypto currency trading data[]{label="fig:heatmap"}](figures/heat_map_crypto.png)
-###### Figure 3: Heat map for discrete crypto currency trading data
+![cpv_stocks[]{label="fig:cpv_stocks"}](figures/test_results_plots/cpv_stocks.png)
+###### Figure 2: Cumulative Portfolio Value for Stocks portfolio
 
-As observed in figure 3 for discrete crypto currency trading data, crypto currencies have higher correlation than discrete stocks which is mainly due to the fact that they’ve been selected on the basis of the volume of trading on the index, that is, the crypto currencies which are performing really good in the market. The basic reason for doing so is that since crypto currency has been introduced in recent years, there is not enough data for the majority of them. In such a scenario, only the top trading one’s provide us with sufficient data to build a well trained framework. The same can be concluded from the interactive plots<sup>10</sup> shown in the figure 4 demonstrating the variation of returns for three crypto currencies - Bitcoin, Ethereum and Litecoin (for years 2016, 2017, 2018 and 2019). As can be seen, majority of the times the returns move in the same direction.
+The mean sharpe ratio obtained for the optimizing agent in case of stocks data is 0.735. As mentioned earlier since the sharpe ratio is less than 1, the results obtained in figure 2 is misleading and the trained agent gives us sub-optimal results for stocks data.
 
-<img src="figures/crypto_returns_2016.jpeg" width="400" height ="400"> <img src="figures/crypto_returns_2017.jpeg" width="400" height ="400"> <img src="figures/crypto_returns_2018.jpeg" width="400" height ="400"><img src="figures/crypto_returns_2019.jpeg" width="400" height ="400">
-###### Figure 4: Returns for discrete crypto stocks
+On testing the performance of optimizing agent over crypto data, the final weights allocated to different assets can be seen in figure 3. The highest weight was assigned to Litecoin followed by XRP(Ripple) and Ethereum. The least weight was assigned to Monero followed by NEM(XEM).
 
-For discrete stocks data, the total data collected is for 3671 days (excluding weekends and national holidays). But in case of crypto currency data, the total data collected varies from 1600 days to 2300 days approximately. Again, largely due to the fact that the crypto currencies were launched much later in the market. Therefore, one of the major problems to be handled while building an efficient framework here is the high sparsity and high correlation in case of crypto currency data.
+![wt_vectors_crypto[]{label="fig:wt_vectors_crypto"}](figures/test_results_plots/wt_vectors_crypto.png)
+###### Figure 3: Weights obtained for Crypto portfolio
+
+As seen in Figure 4 that represents the cumulative portfolio value across test steps, the value returned by the built optimising agent increased with each test step and performed better when compared to the values returned by the agent assigning equal weights amongst all the assets. 
+The optimizing agent exhibited an increase of 300-400% in cumulative portfolio value over the initial portfolio value. The equiweight agent also performed well here exhibiting an increase of around 200% in cumulative portfolio value over the initial portfolio value
+
+
+![cpv_crypto[]{label="fig:cpv_crypto"}](figures/test_results_plots/cpv_crypto.png)
+###### Figure 4: Cumulative Portfolio Value for Crypto portfolio
+
+The mean sharpe ratio obtained for the optimizing agent in case of crypto currency data is 1.652. As mentioned earlier, since the sharpe ratio is greater than 1, the results obtained in figure 4 is acceptable and the trained agent gives us nearly optimal results for crypto currency data.
+
 
 # References
 
-[1] Zhengyao Jiang, Dixing Xu, and Jinjun Liang
-A Deep Reinforcement Learning Framework for
-the Financial Portfolio Management Problem.
-Xi’an Jiaotong-Liverpool University, Suzhou, SU
-215123, P. R. China.
+[1] Historical stocks data of 15 assets from SP 500 portfolio from 2005 to present. https://www.barchart.com
 
-[2] Chi Zhang, Corey Chen, Limian Zhang
-https://www-scf.usc.edu/ zhan527/post/cs599/
+[2] Historical data for 6 Cryptocurrencies from CoinMarketCap from 2015 to present. https://coinmarketcap.com
 
-[3] Xin Du, Jinjian Zhai, Koupin Lv
-Algorithm Trading using Q-Learning and
-Recurrent Reinforcement Learning Dept. of
-Computer Science, Stanford, USA.
+[3] 10 Cryptocurrency Data from Poloniex Exchange. https://poloniex.com/
 
-[4] Olivier Jin, Hamza El-Saawy
-Portfolio Management using Reinforcement
-Learning Dept. of Computer Science, Stanford,
-USA.
+[4] Chi Zhang, Corey Chen, Limian Zhang https://www-scf.usc.edu/~zhan527/post/cs599/
 
-[5] Historical stocks data of 15 assets from
-SP 500 portfolio from 2005 to present.
-https://www.barchart.com
+[5] Olivier Jin, Hamza El-Saawy Portfolio Management using Reinforcement Learning Dept. of Computer Science, Stanford, USA.
 
-[6] Historical data for 6 Cryptocurrencies from
-CoinMarketCap from 2015 to present.
-https://coinmarketcap.com
+[6] Zhengyao Jiang, Dixing Xu, and Jinjun Liang A Deep Reinforcement Learning Framework for the Financial Portfolio Management Problem.
+Xi’an Jiaotong-Liverpool University, Suzhou, SU 215123, P. R. China.
 
-[7] 10 Cryptocurrency Data from Poloniex Exchange
-https://poloniex.com/
-
-[8] Data science tools documentation:
-https://docs.anaconda.com/
-https://seaborn.pydata.org/
-https://www.tensorflow.org/
-https://www.crummy.com/software/BeautifulSoup/bs4/doc/
-https://scikit-learn.org/stable/
-https://plot.ly/
-https://matplotlib.org/
-
-[9] Interactive plots for discrete stock returns using Tableau:
-https://public.tableau.com/profile/sai.charan.konanki#!/vizhome/StockGrouped/StockGrouped?publish=yes
-
-[10] Interactive plots for crypto currency returns using Tableau:
-https://public.tableau.com/profile/sai.charan.konanki#!/vizhome/CryptocurrencyGrouped/CryptoCurrencyGrouped?publish=yes
-
-
-
-
-
-
+[7] Code reference: https://github.com/selimamrouni/Deep-Portfolio-Management-Reinforcement-Learning
