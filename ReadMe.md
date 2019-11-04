@@ -1,6 +1,6 @@
 # Portfolio Optimization using Deep Reinforcement Learning
 ### Bishishta Mukherjee, Konanki Sai Charan, Manvita Markala, Romil Rathi
-### September 30, 2019
+### November 4, 2019
 
 # Summary
 
@@ -8,16 +8,16 @@ Financial portfolio optimization is the process of redistributing funds into mul
 
 The dataset consists of:
 
-(i) Phase 1: Discrete data:
-  Historical stocks data of ~15 assets from S&P 500 portfolio<sup>5</sup> from 2005 to present and historical data for ~6     Cryptocurrencies from CoinMarketCap<sup>6</sup> from 2015 to present.
+(i) Historical trading data for 15 stocks from S&P 500 portfolio<sup>5</sup> from 2005 to present
 
-(ii) Phase 2: Continuous data:
-	~10 Cryptocurrency Data from Poloniex Exchange<sup>7</sup>
+(ii) Discretized historical trading data for 6 Cryptocurrencies from CoinMarketCap<sup>6</sup> from 2015 to present
+
+(ii) Continuous historical trading data for ~10 Cryptocurrencies from Poloniex Exchange<sup>7</sup>
 
 
-The price data follows the format of Open, High, Low and Close (OHLC) for a given time frame. Open is the price at which the stock begins trading, High is the highest value it attains, Low is the lowest value throughout the day and Close is the closing value. For discrete data, this time frame is one day whereas for continuous data, it’ll be about 30 minutes. Usually, open price is equal to close price for the previous day, but cryptocurrency follows high frequency trading, thus we might not see open price for one day same as closing price for previous days. 
+The price data follows the format of Open, High, Low and Close (OHLC) for a given time frame. Open is the price at which the stock begins trading, High is the highest value it attains, Low is the lowest value throughout the day and Close is the closing value. For stocks data and discretized cryptocurrency data, the time frame considered is one trading day whereas for continuous cryptocurrency data, time frame will be about 30 minutes. Usually, open price is equal to close price for the previous day, but cryptocurrency follows high frequency trading, thus we might not see open price for one day same as closing price for previous days. 
 
-To estimate/approximate our profit function, three different frameworks will be built using statistical machine learning models - Convolutional Neural Network (CNN), Recurrent Neural Network (RNN), and Long Short-Term Memory (LSTM). We will be using goal oriented algorithms like deep Q-learning and Recurrent Reinforcement Learning when training the above mentioned neural network models and make them learn how to maximize the return profit over time.
+To build a better portfolio optimizing agent than the one obtained in phase 1, where the solution framework was built using Convolutional Neural Network (CNN), another framework will be built using Long Short-Term Memory (LSTM). We will be using goal oriented algorithms like deep Q-learning and Recurrent Reinforcement Learning when training the above mentioned neural network models and make them learn how to maximize the return profit over time.
 
 
 # Proposed plan of research
