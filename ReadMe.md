@@ -1,6 +1,6 @@
 # Portfolio Optimization using Deep Reinforcement Learning
 ### Bishishta Mukherjee, Konanki Sai Charan, Manvita Markala, Romil Rathi
-### September 30, 2019
+### November 4, 2019
 
 # Summary
 
@@ -8,16 +8,16 @@ Financial portfolio optimization is the process of redistributing funds into mul
 
 The dataset consists of:
 
-(i) Phase 1: Discrete data:
-  Historical stocks data of ~15 assets from S&P 500 portfolio<sup>5</sup> from 2005 to present and historical data for ~6     Cryptocurrencies from CoinMarketCap<sup>6</sup> from 2015 to present.
+(i) Historical trading data for 15 stocks from S&P 500 portfolio<sup>5</sup> from 2005 to present
 
-(ii) Phase 2: Continuous data:
-	~10 Cryptocurrency Data from Poloniex Exchange<sup>7</sup>
+(ii) Discretized historical trading data for 6 Cryptocurrencies from CoinMarketCap<sup>6</sup> from 2015 to present
+
+(ii) Continuous historical trading data for ~10 Cryptocurrencies from Poloniex Exchange<sup>7</sup>
 
 
-The price data follows the format of Open, High, Low and Close (OHLC) for a given time frame. Open is the price at which the stock begins trading, High is the highest value it attains, Low is the lowest value throughout the day and Close is the closing value. For discrete data, this time frame is one day whereas for continuous data, it’ll be about 30 minutes. Usually, open price is equal to close price for the previous day, but cryptocurrency follows high frequency trading, thus we might not see open price for one day same as closing price for previous days. 
+The price data follows the format of Open, High, Low and Close (OHLC) for a given time frame. Open is the price at which the stock begins trading, High is the highest value it attains, Low is the lowest value throughout the day and Close is the closing value. For stocks data and discretized cryptocurrency data, the time frame considered is one trading day whereas for continuous cryptocurrency data, time frame will be about 30 minutes. Usually, open price is equal to close price for the previous day, but cryptocurrency follows high frequency trading, thus we might not see open price for one day same as closing price for previous days. 
 
-To estimate/approximate our profit function, three different frameworks will be built using statistical machine learning models - Convolutional Neural Network (CNN), Recurrent Neural Network (RNN), and Long Short-Term Memory (LSTM). We will be using goal oriented algorithms like deep Q-learning and Recurrent Reinforcement Learning when training the above mentioned neural network models and make them learn how to maximize the return profit over time.
+To build a better portfolio optimizing agent than the one obtained in phase 1, where the solution framework was built using Convolutional Neural Network (CNN), another framework will be built using Long Short-Term Memory (LSTM). We will be using goal oriented algorithms like deep Q-learning and Recurrent Reinforcement Learning when training the above mentioned neural network models and make them learn how to maximize the return profit over time.
 
 
 # Proposed plan of research
@@ -39,22 +39,22 @@ Data science tools<sup>8</sup> used are pandas, tensorflow, beautifulsoup, sciki
 
 In order to explore the relationship between the holdings in different stock sectors, heat map has been plotted to identify the correlation between stocks for both discrete stocks and crypto currency trading data.
 
-![Heat map for discrete stocks trading data[]{label="fig:heatmap"}](heat_map_stocks.png)
+![Heat map for discrete stocks trading data[]{label="fig:heatmap"}](figures/heat_map_stocks.png)
 ###### Figure 1: Heat map for discrete stocks trading data
 
 As observed from Figure 1 for discrete stocks trading data, stocks for some of the companies like Apple, Amazon, Google and Boeing are highly correlated indicating the stocks always move in the same direction. This fact can be used to select assets with very less correlations for the inclusion of the portfolio to further minimize the risk factor.
 
-<img src="stocks_returns_2016.jpeg" width="400" height ="400"> <img src="stocks_returns_2017.jpeg" width="400" height ="400"> <img src="stocks_returns_2018.jpeg" width="400" height ="400"><img src="stocks_returns_2019.jpeg" width="400" height ="400">
+<img src="figures/stocks_returns_2016.jpeg" width="400" height ="400"> <img src="figures/stocks_returns_2017.jpeg" width="400" height ="400"> <img src="figures/stocks_returns_2018.jpeg" width="400" height ="400"><img src="figures/stocks_returns_2019.jpeg" width="400" height ="400">
 ###### Figure 2: Returns for discrete stocks
 
 For example, the interactive plots<sup>9</sup> represented in Figure 2 show the variation of stock returns for three holdings Apple, State Street Corp. and Exxon (for years 2016, 2017, 2018 and 2019) which show a very low correlation amongst themselves. As can be seen, majority of the times the returns move in opposite directions and hence a security factor comes into play if the portfolio is distributed amongst these low correlated assets, as the decrease in returns from one asset can be balanced by the increase in the other.
 
-![Heat map for discrete crypto currency trading data[]{label="fig:heatmap"}](heat_map_crypto.png)
+![Heat map for discrete crypto currency trading data[]{label="fig:heatmap"}](figures/heat_map_crypto.png)
 ###### Figure 3: Heat map for discrete crypto currency trading data
 
 As observed in figure 3 for discrete crypto currency trading data, crypto currencies have higher correlation than discrete stocks which is mainly due to the fact that they’ve been selected on the basis of the volume of trading on the index, that is, the crypto currencies which are performing really good in the market. The basic reason for doing so is that since crypto currency has been introduced in recent years, there is not enough data for the majority of them. In such a scenario, only the top trading one’s provide us with sufficient data to build a well trained framework. The same can be concluded from the interactive plots<sup>10</sup> shown in the figure 4 demonstrating the variation of returns for three crypto currencies - Bitcoin, Ethereum and Litecoin (for years 2016, 2017, 2018 and 2019). As can be seen, majority of the times the returns move in the same direction.
 
-<img src="crypto_returns_2016.jpeg" width="400" height ="400"> <img src="crypto_returns_2017.jpeg" width="400" height ="400"> <img src="crypto_returns_2018.jpeg" width="400" height ="400"><img src="crypto_returns_2019.jpeg" width="400" height ="400">
+<img src="figures/crypto_returns_2016.jpeg" width="400" height ="400"> <img src="figures/crypto_returns_2017.jpeg" width="400" height ="400"> <img src="figures/crypto_returns_2018.jpeg" width="400" height ="400"><img src="figures/crypto_returns_2019.jpeg" width="400" height ="400">
 ###### Figure 4: Returns for discrete crypto stocks
 
 For discrete stocks data, the total data collected is for 3671 days (excluding weekends and national holidays). But in case of crypto currency data, the total data collected varies from 1600 days to 2300 days approximately. Again, largely due to the fact that the crypto currencies were launched much later in the market. Therefore, one of the major problems to be handled while building an efficient framework here is the high sparsity and high correlation in case of crypto currency data.
