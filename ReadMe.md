@@ -37,7 +37,7 @@ Data science tools<sup>8</sup> used are pandas, tensorflow, beautifulsoup, sciki
 
 # Preliminary results
 
-In order to build a portfolio optimizer, 15 assets for stock data based on correlation and 6 assets for cryptocurrencies based on availability of data was considered. A deep Reinforcement learning method was applied and a Convolution Neural Network model was built. The results from the model have been analysed and will be considered as a baseline for the second phase of the project.
+In order to build a portfolio optimizer, 15 assets for stock data based on correlation and 6 assets for cryptocurrencies based on availability of data were considered. A deep Reinforcement learning method was applied and a Convolution Neural Network model was built. The results from the model have been analysed and will be considered as a baseline for the second phase of the project.
 
 On testing the performance of optimizing agent over stocks data, the final weights allocated to different assets can be seen in figure 1. The highest weight was assigned to Coca-Cola Co. followed by Verizon Communications Inc and Walmart Inc. The least weight was assigned Simon Property Group Inc followed by Xcel Energy Inc.
 
