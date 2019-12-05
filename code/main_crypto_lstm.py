@@ -40,6 +40,17 @@ def sharpe_crypto(w ,returns_cov=crypto_covariance_matrix, returns_mean=crypto_r
     sharpe_ratio = portfolio_return/portfolio_volatility
     return sharpe_ratio
 
+def RoMad(weights, mdd, returns_mean=crypto_returns_mean,time_period=num_trading_periods):
+    weights = weights.reshape(len(weights[0],))
+    weights = weights[1:]
+    portfolio_return = np.sum(returns_mean.values * w * time_period)
+    if mdd>0:
+        romad = portfolio_return/mdd
+    else:
+        romad=0
+    return romad
+
+
 def main(stocks = True):
     #environment set up for the portfolio optimizing agent
     env_pf_optimizer = RLEnv(Path = data_path, PortfolioValue = portfolio_value_init, TransCost = trading_cost, 
@@ -105,6 +116,7 @@ def main(stocks = True):
                 list_pf_value_previous_equiweight.append(pf_value_t_equiweight)
                 sharpe_ratio = sharpe_crypto(w=Wt_previous)
                 mdd = max_drawdown(weights=Wt_previous)
+                romad = round(RoMad(weights=Wt_previous, mdd=mdd))
                 list_sharpe_training.append(sharpe_ratio)
 
                 # print(Wt_previous)
@@ -112,7 +124,7 @@ def main(stocks = True):
                 print('current portfolio value : ' + str(pf_value_previous))
                 print('weights assigned : ' + str(Wt_previous))
                 print('sharpe_ratio:', sharpe_ratio)
-                print('Max Drawdown:', mdd)
+                print('RoMad', romad)
                 print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
             
             train_pf_values.append(pf_value_t)
@@ -156,19 +168,20 @@ def main(stocks = True):
         daily_returns_t = X_next_t[-1, :, -1]
         sharpe_ratio = sharpe_crypto(w=wt_previous)
         mdd = max_drawdown(weights=Wt_previous)
+        romad = round(RoMad(weights=Wt_previous, mdd=mdd))
 
         print('------------------ testing -----------------------')
         # print('current portfolio value : ' + str(pf_value_previous))
         # print('weights assigned : ' + str(wt_previous))
         # print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
         print('sharpe_ratio:', sharpe_ratio)
-        print('Max Drawdown:', mdd)
+        print('RoMad', romad)
 
         test_pf_values.append(pf_value_t)
         test_pf_values_equiweight.append(pf_value_t_equiweight)
         weight_vectors.append(wt_t)
         test_sharpe_ratio.append(sharpe_ratio)
-        test_mdd.append(mdd)
+        test_mdd.append(romad)
 
     print('------ test final value -------')
     # print(test_pf_values)
