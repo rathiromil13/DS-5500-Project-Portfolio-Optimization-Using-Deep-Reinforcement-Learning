@@ -8,10 +8,25 @@ from pf_vector_memory import *
 from stocks_parameters import *
 from data_pre_processing import *
 
+
+
 def get_random_action(num_tickers):
     vector_rand = np.random.rand(num_tickers + 1)
     return vector_rand / np.sum(vector_rand)
 
+def max_drawdown(w, returns_mean = crypto_returns_mean):
+    w = w.reshape(len(w[0],))
+    w = w[1:]
+    returns = np.sum(returns_mean.values * w * nbr_trading_days)
+    mdd = 0
+    peak = returns[0]
+    for x in returns:
+        if x > peak: 
+            peak = x
+        dd = (peak - x) / peak
+        if dd > mdd:
+            mdd = dd
+    return mdd
 
 def sharpe_stocks(w ,returns_cov=stocks_covariance_matrix, returns_mean=stocks_returns_mean ):
     w = w.reshape(len(w[0],))
@@ -90,6 +105,7 @@ def main(stocks = True):
 					list_daily_returns_t.append(daily_returns_t)
 					list_pf_value_previous_equiweight.append(pf_value_t_equiweight)
 					sharpe_ratio = round(sharpe_stocks(w=Wt_previous), 3)
+					mdd = round(max_drawdown(w=Wt_previous), 3)
 					# print('------------------ training -----------------------')
 					# print('current portfolio value : ' + str(pf_value_previous))
 					print('weights assigned : ' + str(Wt_t))
@@ -126,6 +142,7 @@ def main(stocks = True):
 	test_pf_values_equiweight = [portfolio_value_init_test]
 	weight_vectors = [weight_vector_init_test] 
 	test_sharpe_ratio = []
+	test_mdd = []
 
 	start_step_num = int(training_steps  + validation_steps - int(num_trading_periods/2))
 	end_step_num = int(training_steps  + validation_steps + test_steps - num_trading_periods)
@@ -143,6 +160,7 @@ def main(stocks = True):
 		pf_value_t_equiweight = state_equiweight[2]
 		daily_returns_t = X_next_t[-1, :, -1]
 		sharpe_ratio = round(sharpe_stocks(w=wt_previous),3)
+		mdd = round(max_drawdown(w=Wt_previous), 3)
 		# print('------------------ testing -----------------------')
 		# print('current portfolio value : ' + str(pf_value_previous))
 		print('weights assigned : ' + str(wt_previous))
@@ -154,11 +172,13 @@ def main(stocks = True):
 		test_pf_values_equiweight.append(pf_value_t_equiweight)
 		weight_vectors.append(wt_t)
 		test_sharpe_ratio.append(sharpe_ratio)
+		test_mdd.append(mdd)
 
 	print('------ test final value -------')
 	print(test_pf_values)
 	print(test_pf_values_equiweight)
-	print(test_sharpe_ratio)
+	print(np.mean(test_sharpe_ratio))
+	print(np.mean(test_mdd))
 	plot_cpv(test_pf_values, test_pf_values_equiweight, portfolio_value_init_test, 'cpv_stocks.png')
 	plot_wts_assigned(weight_vectors[-1], ticker_num, ticker_list, 'wt_vector_stocks.png')
 
