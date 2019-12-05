@@ -57,7 +57,7 @@ class PolicyLSTM(object):
                 network = tf.stack(resultlist)
                 network = tf.transpose(network, [1, 0, 2])
                 network = tf.reshape(network, [-1, 1, self.ticker_num, lstm_neurons])
-                print('dhsegfhebgfhewf', network.shape)
+                # print('dhsegfhebgfhewf', network.shape)
             return network
 
         def policy_output(network, cash_bias):
@@ -118,7 +118,7 @@ class PolicyLSTM(object):
         self.train_op = optimizer.minimize(-self.adjusted_reward)
 
     def compute_weights(self, X_t_, weights_previous_t_):
-        tf.print(self.action_chosen)
+        # tf.print(self.action_chosen)
         return self.sess.run(tf.squeeze(self.action_chosen), feed_dict={self.X_t: X_t_, self.weights_previous_t: weights_previous_t_})
 
     def train_cnn(self, X_t_, weights_previous_t_, pf_previous_t_, daily_returns_t_):

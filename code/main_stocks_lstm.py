@@ -10,6 +10,23 @@ from data_pre_processing import *
 
 num_filter_layer= 20
 
+def max_drawdown(weights, time_period=num_trading_periods, portfolio_data_frame=pivot_table_stocks):
+    weights = weights.reshape(len(weights[0],))
+    weights = weights[1:]
+    simulated_portfolio = weights[0]*portfolio_data_frame.ix[:,0]
+    for i in range(1, len(portfolio_data_frame.columns)):
+        simulated_portfolio += weights[i]*portfolio_data_frame.ix[:,i]
+    max_drawdown_value = float('-inf')
+    for i in range(int(len(simulated_portfolio)/time_period)-1):
+        if min(simulated_portfolio[i*time_period:(i+1)*time_period]) > 0:
+            biggest_variation = max(simulated_portfolio[i*time_period:(i+1)*time_period])/min(simulated_portfolio[i*time_period:(i+1)*time_period])
+        else:
+            biggest_variation = 0
+        if(biggest_variation > max_drawdown_value):
+            max_drawdown_value = biggest_variation
+    return max_drawdown_value
+
+
 def get_random_action(num_tickers):
     vector_rand = np.random.rand(num_tickers + 1)
     return vector_rand / np.sum(vector_rand)
@@ -24,7 +41,9 @@ def sharpe_stocks(w ,returns_cov=stocks_covariance_matrix, returns_mean=stocks_r
     return sharpe_ratio
 
 sharpe_equiweight = round(sharpe_stocks(w=equiweight_weights_stocks), 3)
-print("Equiweighted",sharpe_equiweight)
+mdd_equiweight = round(max_drawdown(weights=equiweight_weights_stocks), 3)
+print("Equiweighted Sharpe",sharpe_equiweight)
+print("Equiweighted MDD",mdd_equiweight)
 
 def main(stocks = True):
 	#environment set up for the portfolio optimizing agent
@@ -93,10 +112,12 @@ def main(stocks = True):
 					list_daily_returns_t.append(daily_returns_t)
 					list_pf_value_previous_equiweight.append(pf_value_t_equiweight)
 					sharpe_ratio = round(sharpe_stocks(w=Wt_previous), 3)
+					mdd = round(max_drawdown(weights=Wt_previous), 3)
 					# print('------------------ training -----------------------')
 					# print('current portfolio value : ' + str(pf_value_previous))
 					print('weights assigned : ' + str(Wt_t))
-					# print('sharpe_ratio:', sharpe_ratio)
+					print('sharpe_ratio:', sharpe_ratio)
+					print('MDD:', mdd)
 					# print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
 					# print("equiweight sharpe", sharpe_equiweight)
 
@@ -129,6 +150,7 @@ def main(stocks = True):
 	test_pf_values_equiweight = [portfolio_value_init_test]
 	weight_vectors = [weight_vector_init_test] 
 	test_sharpe_ratio = []
+	test_mdd = []
 
 	start_step_num = int(training_steps  + validation_steps - int(num_trading_periods/2))
 	end_step_num = int(training_steps  + validation_steps + test_steps - num_trading_periods)
@@ -146,10 +168,12 @@ def main(stocks = True):
 		pf_value_t_equiweight = state_equiweight[2]
 		daily_returns_t = X_next_t[-1, :, -1]
 		sharpe_ratio = round(sharpe_stocks(w=wt_previous),3)
+		mdd = round(max_drawdown(weights=Wt_previous), 3)
 		# print('------------------ testing -----------------------')
 		# print('current portfolio value : ' + str(pf_value_previous))
 		print('weights assigned : ' + str(wt_previous))
-		# print('sharpe_ratio:', sharpe_ratio)
+		print('sharpe_ratio:', sharpe_ratio)
+		print('MDD:', mdd)
 		# print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
 		# print("equiweight sharpe", sharpe_equiweight)
 
@@ -157,11 +181,13 @@ def main(stocks = True):
 		test_pf_values_equiweight.append(pf_value_t_equiweight)
 		weight_vectors.append(wt_t)
 		test_sharpe_ratio.append(sharpe_ratio)
+		test_mdd.append(mdd)
 
 	print('------ test final value -------')
 	print(test_pf_values)
 	print(test_pf_values_equiweight)
-	print(test_sharpe_ratio)
+	print(np.mean(test_sharpe_ratio))
+	print(np.mean(test_mdd))
 	plot_cpv(test_pf_values, test_pf_values_equiweight, portfolio_value_init_test, 'cpv_stocks.png')
 	plot_wts_assigned(weight_vectors[-1], ticker_num, ticker_list, 'wt_vector_stocks.png')
 

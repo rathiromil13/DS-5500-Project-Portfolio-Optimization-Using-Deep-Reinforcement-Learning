@@ -9,24 +9,26 @@ from stocks_parameters import *
 from data_pre_processing import *
 
 
-
 def get_random_action(num_tickers):
     vector_rand = np.random.rand(num_tickers + 1)
     return vector_rand / np.sum(vector_rand)
 
-def max_drawdown(w, returns_mean = crypto_returns_mean):
-    w = w.reshape(len(w[0],))
-    w = w[1:]
-    returns = np.sum(returns_mean.values * w * nbr_trading_days)
-    mdd = 0
-    peak = returns[0]
-    for x in returns:
-        if x > peak: 
-            peak = x
-        dd = (peak - x) / peak
-        if dd > mdd:
-            mdd = dd
-    return mdd
+
+def max_drawdown(weights, time_period=num_trading_periods, portfolio_data_frame=pivot_table_stocks):
+    weights = weights.reshape(len(weights[0],))
+    weights = weights[1:]
+    simulated_portfolio = weights[0]*portfolio_data_frame.ix[:,0]
+    for i in range(1, len(portfolio_data_frame.columns)):
+        simulated_portfolio += weights[i]*portfolio_data_frame.ix[:,i]
+    max_drawdown_value = float('-inf')
+    for i in range(int(len(simulated_portfolio)/time_period)-1):
+        if min(simulated_portfolio[i*time_period:(i+1)*time_period]) > 0:
+            biggest_variation = max(simulated_portfolio[i*time_period:(i+1)*time_period])/min(simulated_portfolio[i*time_period:(i+1)*time_period])
+        else:
+            biggest_variation = 0
+        if(biggest_variation > max_drawdown_value):
+            max_drawdown_value = biggest_variation
+    return max_drawdown_value
 
 def sharpe_stocks(w ,returns_cov=stocks_covariance_matrix, returns_mean=stocks_returns_mean ):
     w = w.reshape(len(w[0],))
@@ -37,7 +39,9 @@ def sharpe_stocks(w ,returns_cov=stocks_covariance_matrix, returns_mean=stocks_r
     return sharpe_ratio
 
 sharpe_equiweight = round(sharpe_stocks(w=equiweight_weights_stocks), 3)
-print("Equiweighted",sharpe_equiweight)
+mdd_equiweight = round(max_drawdown(w=equiweight_weights_stocks), 3)
+print("Equiweighted Sharpe",sharpe_equiweight)
+print("Equiweighted MDD",mdd_equiweight)
 
 def main(stocks = True):
 	#environment set up for the portfolio optimizing agent
@@ -68,7 +72,7 @@ def main(stocks = True):
 			pvm = PFVectorMemory(ticker_num, beta_pvm, training_steps, training_batch_size, weight_vector_init)
 			
 			for batch_num in tqdm.tnrange(num_batches, desc = 'Batches'):
-				list_X_t, list_wt_previous, list_pf_value_previous, list_daily_returns_t, list_pf_value_previous_equiweight, sharpe_ratio_train = [], [], [], [], [], []
+				list_X_t, list_wt_previous, list_pf_value_previous, list_daily_returns_t, list_pf_value_previous_equiweight, sharpe_ratio_train, mdd_train = [], [], [], [], [], [], []
 
 				#Selecting the first time t
 				training_batch_t_selection = False
@@ -105,17 +109,19 @@ def main(stocks = True):
 					list_daily_returns_t.append(daily_returns_t)
 					list_pf_value_previous_equiweight.append(pf_value_t_equiweight)
 					sharpe_ratio = round(sharpe_stocks(w=Wt_previous), 3)
-					mdd = round(max_drawdown(w=Wt_previous), 3)
+					mdd = round(max_drawdown(weights=Wt_previous), 3)
 					# print('------------------ training -----------------------')
 					# print('current portfolio value : ' + str(pf_value_previous))
 					print('weights assigned : ' + str(Wt_t))
-					# print('sharpe_ratio:', sharpe_ratio)
+					print('sharpe_ratio:', sharpe_ratio)
+					print('MDD', mdd)
 					# print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
 					# print("equiweight sharpe", sharpe_equiweight)
 
 				train_pf_values.append(pf_value_t)
 				sharpe_ratio_train.append(sharpe_ratio)
 				train_pf_values_equiweight.append(pf_value_t_equiweight)
+				mdd_train.append(mdd)
 
 				#training the network after each batch to maximize the reward
 				pf_opt_agent.train_cnn(np.array(list_X_t), 
@@ -132,7 +138,7 @@ def main(stocks = True):
 			print('------ train final value -------')
 			print(train_pf_values)
 			print(train_pf_values_equiweight)
-			print(sharpe_ratio_train)
+			# print(sharpe_ratio_train)
 	#---------------------------------------- testing of the trained portfolio optimizer ------------------------------------
 
 	state, done = env_pf_optimizer.ResetEnvironment(weight_vector_init_test, portfolio_value_init_test, training_batch_t)
@@ -160,11 +166,12 @@ def main(stocks = True):
 		pf_value_t_equiweight = state_equiweight[2]
 		daily_returns_t = X_next_t[-1, :, -1]
 		sharpe_ratio = round(sharpe_stocks(w=wt_previous),3)
-		mdd = round(max_drawdown(w=Wt_previous), 3)
+		mdd = round(max_drawdown(weights=Wt_previous), 3)
 		# print('------------------ testing -----------------------')
 		# print('current portfolio value : ' + str(pf_value_previous))
 		print('weights assigned : ' + str(wt_previous))
-		# print('sharpe_ratio:', sharpe_ratio)
+		print('sharpe_ratio:', sharpe_ratio)
+		print('MDD', mdd)
 		# print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
 		# print("equiweight sharpe", sharpe_equiweight)
 
