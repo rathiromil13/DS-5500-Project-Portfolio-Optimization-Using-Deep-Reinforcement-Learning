@@ -13,7 +13,21 @@ def get_random_action(num_tickers):
     vector_rand = np.random.rand(num_tickers + 1)
     return vector_rand / np.sum(vector_rand)
 
-def sharpe_crypto(w ,returns_cov=crypto_covariance_matrix, returns_mean=crypto_returns_mean ):
+def max_drawdown(w, returns_mean = crypto_returns_mean):
+    w = w.reshape(len(w[0],))
+    w = w[1:]
+    returns = np.sum(returns_mean.values * w * nbr_trading_days)
+    mdd = 0
+    peak = returns[0]
+    for x in returns:
+        if x > peak: 
+            peak = x
+        dd = (peak - x) / peak
+        if dd > mdd:
+            mdd = dd
+    return mdd
+
+def sharpe_crypto(w ,returns_cov=crypto_covariance_matrix, returns_mean=crypto_returns_mean):
     w = w.reshape(len(w[0],))
     w = w[1:]
     portfolio_return = np.sum(returns_mean.values * w * nbr_trading_days)
@@ -86,6 +100,7 @@ def main(stocks = True):
                 list_daily_returns_t.append(daily_returns_t)
                 list_pf_value_previous_equiweight.append(pf_value_t_equiweight)
                 sharpe_ratio = sharpe_crypto(w=Wt_previous)
+                mdd = max_drawdown(w=Wt_previous)
                 list_sharpe_training.append(sharpe_ratio)
 
                 # print(Wt_previous)
@@ -93,6 +108,7 @@ def main(stocks = True):
                 print('current portfolio value : ' + str(pf_value_previous))
                 print('weights assigned : ' + str(Wt_previous))
                 print('sharpe_ratio:', sharpe_ratio)
+                print('Max Drawdown:', mdd)
                 print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
             
             train_pf_values.append(pf_value_t)
@@ -134,12 +150,11 @@ def main(stocks = True):
         pf_value_t_equiweight = state_equiweight[2]
         daily_returns_t = X_next_t[-1, :, -1]
         sharpe_ratio = sharpe_crypto(w=wt_previous)
+        mdd = max_drawdown(w=Wt_previous)
 
         print('------------------ testing -----------------------')
-        # print('current portfolio value : ' + str(pf_value_previous))
-        # print('weights assigned : ' + str(wt_previous))
-        # print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
         print('sharpe_ratio:', sharpe_ratio)
+        print('Max Drawdown:', mdd)
 
         test_pf_values.append(pf_value_t)
         test_pf_values_equiweight.append(pf_value_t_equiweight)
@@ -147,9 +162,8 @@ def main(stocks = True):
         test_sharpe_ratio.append(sharpe_ratio)
 
     print('------ test final value -------')
-    # print(test_pf_values)
-    # print(test_pf_values_equiweight)
     print('Mean sharpe ratio : ' + str(np.mean(test_sharpe_ratio)))
+    print('Mean Max Drawdown:', str(np.mean(mdd)))
     plot_cpv(test_pf_values, test_pf_values_equiweight, portfolio_value_init_test, 'cpv_crypto.png')
     plot_wts_assigned(weight_vectors[-1], ticker_num, ticker_list, 'wt_vector_crypto.png')
 
