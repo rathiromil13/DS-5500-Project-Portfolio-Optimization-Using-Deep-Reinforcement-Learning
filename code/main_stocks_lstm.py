@@ -10,6 +10,20 @@ from data_pre_processing import *
 
 num_filter_layer= 20
 
+
+def get_random_action(num_tickers):
+    vector_rand = np.random.rand(num_tickers + 1)
+    return vector_rand / np.sum(vector_rand)
+
+
+def sharpe_stocks(w ,returns_cov=stocks_covariance_matrix, returns_mean=stocks_returns_mean ):
+    w = w.reshape(len(w[0],))
+    w = w[1:]
+    portfolio_return = np.sum(returns_mean.values * w * nbr_trading_days)
+    portfolio_volatility = np.sqrt(np.dot(w.T, np.dot(returns_cov.values, w))* nbr_trading_days)
+    sharpe_ratio = portfolio_return / portfolio_volatility
+    return sharpe_ratio
+
 def max_drawdown(weights, time_period=num_trading_periods, portfolio_data_frame=pivot_table_stocks):
     weights = weights.reshape(len(weights[0],))
     weights = weights[1:]
@@ -26,19 +40,15 @@ def max_drawdown(weights, time_period=num_trading_periods, portfolio_data_frame=
             max_drawdown_value = biggest_variation
     return max_drawdown_value
 
-
-def get_random_action(num_tickers):
-    vector_rand = np.random.rand(num_tickers + 1)
-    return vector_rand / np.sum(vector_rand)
-
-
-def sharpe_stocks(w ,returns_cov=stocks_covariance_matrix, returns_mean=stocks_returns_mean ):
-    w = w.reshape(len(w[0],))
-    w = w[1:]
-    portfolio_return = np.sum(returns_mean.values * w * nbr_trading_days)
-    portfolio_volatility = np.sqrt(np.dot(w.T, np.dot(returns_cov.values, w))* nbr_trading_days)
-    sharpe_ratio = portfolio_return / portfolio_volatility
-    return sharpe_ratio
+def RoMad(weights, mdd, returns_mean=stocks_returns_mean,time_period=num_trading_periods):
+    weights = weights.reshape(len(weights[0],))
+    weights = weights[1:]
+    portfolio_return = np.sum(returns_mean.values * w * time_period)
+    if mdd>0:
+        romad = portfolio_return/mdd
+    else:
+        romad=0
+    return romad
 
 sharpe_equiweight = round(sharpe_stocks(w=equiweight_weights_stocks), 3)
 mdd_equiweight = round(max_drawdown(weights=equiweight_weights_stocks), 3)
@@ -113,11 +123,12 @@ def main(stocks = True):
 					list_pf_value_previous_equiweight.append(pf_value_t_equiweight)
 					sharpe_ratio = round(sharpe_stocks(w=Wt_previous), 3)
 					mdd = round(max_drawdown(weights=Wt_previous), 3)
+					romad = round(RoMad(weights=Wt_previous, mdd=mdd))
 					# print('------------------ training -----------------------')
 					# print('current portfolio value : ' + str(pf_value_previous))
 					print('weights assigned : ' + str(Wt_t))
 					print('sharpe_ratio:', sharpe_ratio)
-					print('MDD:', mdd)
+					print('RoMad:', romad)
 					# print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
 					# print("equiweight sharpe", sharpe_equiweight)
 
@@ -169,11 +180,12 @@ def main(stocks = True):
 		daily_returns_t = X_next_t[-1, :, -1]
 		sharpe_ratio = round(sharpe_stocks(w=wt_previous),3)
 		mdd = round(max_drawdown(weights=Wt_previous), 3)
+		romad = round(RoMad(weights=Wt_previous, mdd=mdd))
 		# print('------------------ testing -----------------------')
 		# print('current portfolio value : ' + str(pf_value_previous))
 		print('weights assigned : ' + str(wt_previous))
 		print('sharpe_ratio:', sharpe_ratio)
-		print('MDD:', mdd)
+		print('RoMad:', romad)
 		# print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
 		# print("equiweight sharpe", sharpe_equiweight)
 
@@ -181,7 +193,7 @@ def main(stocks = True):
 		test_pf_values_equiweight.append(pf_value_t_equiweight)
 		weight_vectors.append(wt_t)
 		test_sharpe_ratio.append(sharpe_ratio)
-		test_mdd.append(mdd)
+		test_mdd.append(romad)
 
 	print('------ test final value -------')
 	print(test_pf_values)

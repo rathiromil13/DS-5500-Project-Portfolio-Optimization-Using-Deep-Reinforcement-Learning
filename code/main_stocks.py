@@ -30,6 +30,16 @@ def max_drawdown(weights, time_period=num_trading_periods, portfolio_data_frame=
             max_drawdown_value = biggest_variation
     return max_drawdown_value
 
+def RoMad(weights, mdd, returns_mean=stocks_returns_mean,time_period=num_trading_periods):
+    weights = weights.reshape(len(weights[0],))
+    weights = weights[1:]
+    portfolio_return = np.sum(returns_mean.values * w * time_period)
+    if mdd>0:
+        romad = portfolio_return/mdd
+    else:
+        romad=0
+    return romad
+
 def sharpe_stocks(w ,returns_cov=stocks_covariance_matrix, returns_mean=stocks_returns_mean ):
     w = w.reshape(len(w[0],))
     w = w[1:]
@@ -40,8 +50,7 @@ def sharpe_stocks(w ,returns_cov=stocks_covariance_matrix, returns_mean=stocks_r
 
 sharpe_equiweight = round(sharpe_stocks(w=equiweight_weights_stocks), 3)
 mdd_equiweight = round(max_drawdown(w=equiweight_weights_stocks), 3)
-print("Equiweighted Sharpe",sharpe_equiweight)
-print("Equiweighted MDD",mdd_equiweight)
+
 
 def main(stocks = True):
 	#environment set up for the portfolio optimizing agent
@@ -110,18 +119,19 @@ def main(stocks = True):
 					list_pf_value_previous_equiweight.append(pf_value_t_equiweight)
 					sharpe_ratio = round(sharpe_stocks(w=Wt_previous), 3)
 					mdd = round(max_drawdown(weights=Wt_previous), 3)
+					romad = round(RoMad(weights=Wt_previous, mdd=mdd))
 					# print('------------------ training -----------------------')
 					# print('current portfolio value : ' + str(pf_value_previous))
 					print('weights assigned : ' + str(Wt_t))
 					print('sharpe_ratio:', sharpe_ratio)
-					print('MDD', mdd)
+					print('RoMaD', romad)
 					# print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
 					# print("equiweight sharpe", sharpe_equiweight)
 
 				train_pf_values.append(pf_value_t)
 				sharpe_ratio_train.append(sharpe_ratio)
 				train_pf_values_equiweight.append(pf_value_t_equiweight)
-				mdd_train.append(mdd)
+				mdd_train.append(romad)
 
 				#training the network after each batch to maximize the reward
 				pf_opt_agent.train_cnn(np.array(list_X_t), 
@@ -167,11 +177,12 @@ def main(stocks = True):
 		daily_returns_t = X_next_t[-1, :, -1]
 		sharpe_ratio = round(sharpe_stocks(w=wt_previous),3)
 		mdd = round(max_drawdown(weights=Wt_previous), 3)
+		romad = round(RoMad(weights=Wt_previous, mdd=mdd))
 		# print('------------------ testing -----------------------')
 		# print('current portfolio value : ' + str(pf_value_previous))
 		print('weights assigned : ' + str(wt_previous))
 		print('sharpe_ratio:', sharpe_ratio)
-		print('MDD', mdd)
+		print('RoMaD', romad)
 		# print('equiweight portfolio value : ' + str(pf_value_t_equiweight))
 		# print("equiweight sharpe", sharpe_equiweight)
 
@@ -179,7 +190,7 @@ def main(stocks = True):
 		test_pf_values_equiweight.append(pf_value_t_equiweight)
 		weight_vectors.append(wt_t)
 		test_sharpe_ratio.append(sharpe_ratio)
-		test_mdd.append(mdd)
+		test_mdd.append(romad)
 
 	print('------ test final value -------')
 	print(test_pf_values)
