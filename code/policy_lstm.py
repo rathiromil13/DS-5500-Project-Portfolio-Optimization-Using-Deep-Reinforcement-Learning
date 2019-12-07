@@ -121,7 +121,7 @@ class PolicyLSTM(object):
         # tf.print(self.action_chosen)
         return self.sess.run(tf.squeeze(self.action_chosen), feed_dict={self.X_t: X_t_, self.weights_previous_t: weights_previous_t_})
 
-    def train_cnn(self, X_t_, weights_previous_t_, pf_previous_t_, daily_returns_t_):
+    def train_lstm(self, X_t_, weights_previous_t_, pf_previous_t_, daily_returns_t_):
         """
         training the neural network
         """
