@@ -137,7 +137,7 @@ def main(stocks = True):
 				train_pf_values_equiweight.append(pf_value_t_equiweight)
 
 				#training the network after each batch to maximize the reward
-				pf_opt_agent.train_cnn(np.array(list_X_t), 
+				pf_opt_agent.train_lstm(np.array(list_X_t), 
 					np.array(list_wt_previous),
 					np.array(list_pf_value_previous), 
 					np.array(list_daily_returns_t))
