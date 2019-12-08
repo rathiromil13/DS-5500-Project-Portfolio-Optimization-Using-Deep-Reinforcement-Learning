@@ -16,12 +16,15 @@ def ReadData(TypeOfData):
     if TypeOfData == "Crypto":
         Data = pd.read_csv(CryptoPath)
         Ticker = "crypto_ticker"
+        Timeperiod = 365
     elif TypeOfData == "Stocks":
         Data = pd.read_csv(Stocks)
         Ticker = "ticker"
+        Timeperiod = 252
     elif TypeOfData == "CryptoCont":
         Data = pd.read_csv(CryptoCont)
         Ticker = "crypto_ticker"
+        Timeperiod = 365
     else:
         print("Error")
 
@@ -70,8 +73,8 @@ def EfficientFrontier(AvgReturns, Covariance, CountPortfolio, RFF):
         WeightHolder.append(Wei)
         
         # Calculating standard deviation and portfolio returns using portfolio weights, covariance matrix, returns
-        Por_SD = np.sqrt(np.dot(Wei.T, np.dot(Covariance, Wei))) * np.sqrt(365)
-        Por_Return = np.sum(AvgReturns*Wei ) *365
+        Por_SD = np.sqrt(np.dot(Wei.T, np.dot(Covariance, Wei))) * np.sqrt(Timeperiod)
+        Por_Return = np.sum(AvgReturns*Wei ) *Timeperiod
         
         # Storing std dev and portfolio returns in results variable
         Res[0,j] = Por_SD
